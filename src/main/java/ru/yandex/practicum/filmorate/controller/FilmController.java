@@ -27,6 +27,17 @@ public class FilmController {
         return new ArrayList<>(films.values());
     }
 
+    @GetMapping("/popular")
+    public List<Film> getPopularFilms(
+            @RequestParam(required = false) Integer count,
+            @RequestParam(required = false) Integer genreId,
+            @RequestParam(required = false) Integer year) {
+
+        log.info("Запрос на получение популярных фильмов: count={}, genreId={}, year={}", count, genreId, year);
+
+        return new ArrayList<>();
+    }
+
     @PostMapping
     public Film addFilm(@RequestBody Film film) {
         log.info("Запрос на добавление фильма: {}", film);
