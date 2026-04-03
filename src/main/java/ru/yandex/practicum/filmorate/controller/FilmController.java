@@ -112,8 +112,10 @@ public class FilmController {
             }
             film.setMpa(mpa);
         }
+
         film.setGenres(store.normalizeGenres(film.getGenres()));
         film.setDirectors(store.normalizeDirectors(film.getDirectors()));
+
         if (existing != null) {
             film.setLikes(existing.getLikes());
         }
