@@ -1,28 +1,32 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.model.*;
+import ru.yandex.practicum.filmorate.model.Director;
+import ru.yandex.practicum.filmorate.model.Event;
+import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.Mpa;
+import ru.yandex.practicum.filmorate.model.Review;
+import ru.yandex.practicum.filmorate.model.User;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Component
 public class InMemoryDataStore {
-    public final Map<Integer, User> users = new LinkedHashMap<>();
-    public final Map<Integer, Film> films = new LinkedHashMap<>();
-    public final Map<Integer, Director> directors = new LinkedHashMap<>();
-    public final Map<Integer, Review> reviews = new LinkedHashMap<>();
-    public final Map<Integer, List<Event>> feed = new HashMap<>();
+    private final Map<Integer, User> users = new LinkedHashMap<>();
+    private final Map<Integer, Film> films = new LinkedHashMap<>();
+    private final Map<Integer, Director> directors = new LinkedHashMap<>();
+    private final Map<Integer, Review> reviews = new LinkedHashMap<>();
+    private final Map<Integer, Event> events = new LinkedHashMap<>();
+    private final Map<Integer, Genre> genres = new LinkedHashMap<>();
+    private final Map<Integer, Mpa> mpas = new LinkedHashMap<>();
 
-    public final Map<Integer, Genre> genres = new LinkedHashMap<>();
-    public final Map<Integer, Mpa> mpas = new LinkedHashMap<>();
-
-    private final AtomicInteger userId = new AtomicInteger(1);
-    private final AtomicInteger filmId = new AtomicInteger(1);
-    private final AtomicInteger directorId = new AtomicInteger(1);
-    private final AtomicInteger reviewId = new AtomicInteger(1);
-    private final AtomicLong eventId = new AtomicLong(1);
+    private int nextUserId = 1;
+    private int nextFilmId = 1;
+    private int nextDirectorId = 1;
+    private int nextReviewId = 1;
+    private int nextEventId = 1;
 
     public InMemoryDataStore() {
         genres.put(1, new Genre(1, "Комедия"));
@@ -39,9 +43,51 @@ public class InMemoryDataStore {
         mpas.put(5, new Mpa(5, "NC-17"));
     }
 
-    public int nextUserId() { return userId.getAndIncrement(); }
-    public int nextFilmId() { return filmId.getAndIncrement(); }
-    public int nextDirectorId() { return directorId.getAndIncrement(); }
-    public int nextReviewId() { return reviewId.getAndIncrement(); }
-    public long nextEventId() { return eventId.getAndIncrement(); }
+    public Map<Integer, User> getUsers() {
+        return users;
+    }
+
+    public Map<Integer, Film> getFilms() {
+        return films;
+    }
+
+    public Map<Integer, Director> getDirectors() {
+        return directors;
+    }
+
+    public Map<Integer, Review> getReviews() {
+        return reviews;
+    }
+
+    public Map<Integer, Event> getEvents() {
+        return events;
+    }
+
+    public Map<Integer, Genre> getGenres() {
+        return genres;
+    }
+
+    public Map<Integer, Mpa> getMpas() {
+        return mpas;
+    }
+
+    public int nextUserId() {
+        return nextUserId++;
+    }
+
+    public int nextFilmId() {
+        return nextFilmId++;
+    }
+
+    public int nextDirectorId() {
+        return nextDirectorId++;
+    }
+
+    public int nextReviewId() {
+        return nextReviewId++;
+    }
+
+    public int nextEventId() {
+        return nextEventId++;
+    }
 }
