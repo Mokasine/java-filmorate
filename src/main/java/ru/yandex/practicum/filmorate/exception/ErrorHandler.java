@@ -1,30 +1,41 @@
 package ru.yandex.practicum.filmorate.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Map;
-
+@Slf4j
 @RestControllerAdvice
 public class ErrorHandler {
 
-    @ExceptionHandler(ValidationException.class)
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidationException(ValidationException e) {
-        return Map.of("error", e.getMessage());
+    public ErrorResponse handleValidationException(final ValidationException e) {
+        log.error("Ошибка валидации: {}", e.getMessage());
+        return new ErrorResponse(e.getMessage());
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handleNotFoundException(NotFoundException e) {
-        return Map.of("error", e.getMessage());
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleIllegalArgument(final IllegalArgumentException e) {
+        log.error("Некорректный аргумент: {}", e.getMessage());
+        return new ErrorResponse(e.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMethodArgumentNotValid(final MethodArgumentNotValidException e) {
+        log.error("Ошибка валидации запроса: {}", e.getMessage());
+        return new ErrorResponse("Некорректные данные запроса");
+    }
+
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, String> handleException(Exception e) {
-        return Map.of("error", "Произошла внутренняя ошибка сервера");
+    public ErrorResponse handleThrowable(final Throwable e) {
+        log.error("Внутренняя ошибка сервера", e);
+        return new ErrorResponse("Произошла внутренняя ошибка сервера");
     }
 }
