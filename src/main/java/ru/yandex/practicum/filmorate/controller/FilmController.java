@@ -9,47 +9,69 @@ import java.util.List;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    private final FilmService service;
+    private final FilmService filmService;
 
-    public FilmController(FilmService service) {
-        this.service = service;
+    public FilmController(FilmService filmService) {
+        this.filmService = filmService;
     }
 
     @GetMapping
-    public List<Film> getAllFilms() { return service.getAll(); }
+    public List<Film> getAllFilms() {
+        return filmService.getAllFilms();
+    }
 
     @GetMapping("/{id}")
-    public Film getFilm(@PathVariable Integer id) { return service.getById(id); }
+    public Film getFilm(@PathVariable Integer id) {
+        return filmService.getFilm(id);
+    }
 
     @PostMapping
-    public Film addFilm(@RequestBody Film film) { return service.add(film); }
+    public Film addFilm(@RequestBody Film film) {
+        return filmService.addFilm(film);
+    }
 
     @PutMapping
-    public Film updateFilm(@RequestBody Film film) { return service.update(film); }
+    public Film updateFilm(@RequestBody Film film) {
+        return filmService.updateFilm(film);
+    }
 
     @DeleteMapping("/{id}")
-    public void deleteFilm(@PathVariable Integer id) { service.delete(id); }
+    public void deleteFilm(@PathVariable Integer id) {
+        filmService.deleteFilm(id);
+    }
 
     @PutMapping("/{id}/like/{userId}")
-    public void addLike(@PathVariable Integer id, @PathVariable Integer userId) { service.addLike(id, userId); }
+    public void addLike(@PathVariable Integer id, @PathVariable Integer userId) {
+        filmService.addLike(id, userId);
+    }
 
     @DeleteMapping("/{id}/like/{userId}")
-    public void removeLike(@PathVariable Integer id, @PathVariable Integer userId) { service.removeLike(id, userId); }
+    public void removeLike(@PathVariable Integer id, @PathVariable Integer userId) {
+        filmService.removeLike(id, userId);
+    }
 
     @GetMapping("/popular")
-    public List<Film> getPopularFilms(@RequestParam(required = false) Integer count,
-                                      @RequestParam(required = false) Integer genreId,
-                                      @RequestParam(required = false) Integer year) {
-        return service.getPopular(count, genreId, year);
+    public List<Film> getPopularFilms(
+            @RequestParam(defaultValue = "10") Integer count,
+            @RequestParam(required = false) Integer genreId,
+            @RequestParam(required = false) Integer year
+    ) {
+        return filmService.getPopularFilms(count, genreId, year);
     }
 
     @GetMapping("/director/{directorId}")
-    public List<Film> getByDirector(@PathVariable Integer directorId, @RequestParam String sortBy) {
-        return service.getByDirector(directorId, sortBy);
+    public List<Film> getByDirector(
+            @PathVariable Integer directorId,
+            @RequestParam String sortBy
+    ) {
+        return filmService.getByDirector(directorId, sortBy);
     }
 
     @GetMapping("/search")
-    public List<Film> search(@RequestParam String query, @RequestParam(required = false) String by) {
-        return service.search(query, by);
+    public List<Film> search(
+            @RequestParam String query,
+            @RequestParam String by
+    ) {
+        return filmService.search(query, by);
     }
 }

@@ -9,24 +9,34 @@ import java.util.List;
 @RestController
 @RequestMapping("/directors")
 public class DirectorController {
-    private final DirectorService service;
+    private final DirectorService directorService;
 
-    public DirectorController(DirectorService service) {
-        this.service = service;
+    public DirectorController(DirectorService directorService) {
+        this.directorService = directorService;
     }
 
     @GetMapping
-    public List<Director> getAll() { return service.getAll(); }
+    public List<Director> getAll() {
+        return directorService.getAll();
+    }
 
     @GetMapping("/{id}")
-    public Director getById(@PathVariable Integer id) { return service.getById(id); }
+    public Director getById(@PathVariable Integer id) {
+        return directorService.getById(id);
+    }
 
     @PostMapping
-    public Director add(@RequestBody Director director) { return service.add(director); }
+    public Director add(@RequestBody Director director) {
+        return directorService.add(director);
+    }
 
     @PutMapping
-    public Director update(@RequestBody Director director) { return service.update(director); }
+    public Director update(@RequestBody Director director) {
+        return directorService.update(director);
+    }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) { service.delete(id); }
+    public void delete(@PathVariable Integer id) {
+        directorService.delete(id);
+    }
 }

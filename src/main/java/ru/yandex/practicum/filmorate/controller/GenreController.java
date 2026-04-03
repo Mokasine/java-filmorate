@@ -9,15 +9,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/genres")
 public class GenreController {
-    private final FilmService service;
+    private final FilmService filmService;
 
-    public GenreController(FilmService service) {
-        this.service = service;
+    public GenreController(FilmService filmService) {
+        this.filmService = filmService;
     }
 
     @GetMapping
-    public List<Genre> getAll() { return service.getGenres(); }
+    public List<Genre> getAll() {
+        return filmService.getAllGenres();
+    }
 
     @GetMapping("/{id}")
-    public Genre getById(@PathVariable Integer id) { return service.getGenre(id); }
+    public Genre getById(@PathVariable Integer id) {
+        return filmService.getGenreById(id);
+    }
 }

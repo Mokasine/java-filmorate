@@ -9,15 +9,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/mpa")
 public class MpaController {
-    private final FilmService service;
+    private final FilmService filmService;
 
-    public MpaController(FilmService service) {
-        this.service = service;
+    public MpaController(FilmService filmService) {
+        this.filmService = filmService;
     }
 
     @GetMapping
-    public List<Mpa> getAll() { return service.getMpas(); }
+    public List<Mpa> getAll() {
+        return filmService.getAllMpa();
+    }
 
     @GetMapping("/{id}")
-    public Mpa getById(@PathVariable Integer id) { return service.getMpa(id); }
+    public Mpa getById(@PathVariable Integer id) {
+        return filmService.getMpaById(id);
+    }
 }
